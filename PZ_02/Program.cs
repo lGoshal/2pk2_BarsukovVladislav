@@ -21,7 +21,7 @@
                     Console.WriteLine(" Сентябрь - 30 дней, \n Октябрь  - 31 день, \n Ноябрь   - 30 дней.");
                     break;
                 default:
-                    Console.WriteLine(" Вы введли не правильное число");
+                    Console.WriteLine(" Вы ввели не правильное число");
                     break;
             }
 
