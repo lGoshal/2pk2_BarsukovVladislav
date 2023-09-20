@@ -42,12 +42,12 @@ namespace PZ_04
             //    if (b % a == 0)
             //        Console.WriteLine(b);
             //Пятое задание
-            Console.WriteLine("Введите разницу чисел (18)");
-            int a = Convert.ToInt32(Console.ReadLine());
-            for (int b = 2, c = 40; Math.Abs(b - c) != a; b++, c--)
-            {
-                Console.WriteLine("{0} {1}", b, c);
-            }
+            //Console.WriteLine("Введите разницу чисел (18)");
+            //int a = Convert.ToInt32(Console.ReadLine());
+            //for (int b = 2, c = 40; Math.Abs(b - c) != a; b++, c--)
+            //{
+            //    Console.WriteLine("{0} {1}", b, c);
+            //}
             //5 задание работает, но не так как нужно, все перепробовал, но такой вариант самый адекватный
         }
     }
