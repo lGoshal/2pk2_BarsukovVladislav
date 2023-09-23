@@ -11,10 +11,10 @@ namespace PZ_05
             int b = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Введите значение переменной (2)");
             int c = Convert.ToInt32(Console.ReadLine());
-            while (c <= a)
+            while (a <= b)
             {
-                Console.WriteLine(c);
-                c *= b;
+                Console.WriteLine(a);
+                a *= c;
             }
             //Надеюсь это не возведение в степень), работает не только для 2 но и для других значений.
         }
