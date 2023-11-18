@@ -1,4 +1,4 @@
-﻿namespace PZ_08
+﻿namespace PZ_09
 {
     internal class Program
     {
