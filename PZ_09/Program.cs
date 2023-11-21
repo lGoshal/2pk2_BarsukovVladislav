@@ -1,36 +1,43 @@
-﻿namespace PZ_09
+﻿using System.Net.Http.Headers;
+
+namespace PZ_09
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите слово: ");
-            string word = Console.ReadLine();//Ввод переменной и присвоение ей значение истина    
-            bool isValidIdentifier = true;
+            Console.WriteLine("Введите текст:");
+            string inputText = Console.ReadLine();
 
+            string[] words = inputText.Split(' ');
 
-
-            if (string.IsNullOrEmpty(word))//Проверка на нулевую строку
-                isValidIdentifier = false;
-
-
-            char firstChar = word[0]; // Проверка первого символа
-            if (!Char.IsLetter(firstChar) && firstChar != '_')
-                isValidIdentifier = false;
-
-
-            for (int i = 1; i < word.Length; i++)// Проверка остальных символов
+            Console.WriteLine("Анализ введенного текста:");
+            foreach (string word in words)
             {
-                char ch = word[i];
-                if (!Char.IsLetterOrDigit(ch) && ch != '_')
-                    isValidIdentifier = false;
+                if (IsNumber(word)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (word.Length > 5)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+
+                Console.Write($"{word} ");
             }
 
+            Console.ResetColor();
+            Console.WriteLine();
+        }
 
-            if (isValidIdentifier)//Вывод результата
-                Console.WriteLine("Введенное слово является идентификатором.");
-            else
-                Console.WriteLine("Введенное слово не является идентификатором.");
+        static bool IsNumber(string word)
+        {
+            int number;
+            return int.TryParse(word, out number);
         }
     }
 }
