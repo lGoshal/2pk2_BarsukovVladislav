@@ -1,0 +1,204 @@
+namespace PZ_16
+{
+    internal class Program
+    {
+        //Объявление глобальных переменных
+        static int mapSize = 25;
+        static char[,] map = new char[mapSize, mapSize];
+        static int playerY = mapSize / 2;
+        static int playerX = mapSize / 2;
+        static byte enemies = 10;
+        static byte buffs = 5;
+        static byte health = 5;
+        static int PlayerHp = 50;
+        static int EnemiesHp = 30;
+        static int PlayerPower = 10;
+        static int EnemiesPower = 5;
+        static int NumSteps = 0;
+        static int buffcount = 0;
+        static int playerOldY;
+        static int playerOldX;
+        static int buffcounthelp = 0;
+        enum Direction { Left, Right, Up, Down }
+        //Основной метод
+        static void Main(string[] args)
+        {
+
+            GenerationMap();
+            Move();
+  
+
+        }
+        //Метод генерации карты
+        static void GenerationMap()
+        {
+            //Ввод рандома
+            Random random = new Random();
+            //Создание карты
+            for (int i = 0; i < mapSize; i++)
+            {
+                for (int j = 0; j < mapSize; j++)
+                {
+                    map[i, j] = '_';
+
+                }
+            }
+            //Присвоение начальных координат
+            map[playerX, playerY] = 'P';
+            int x;
+            int y;
+            //Цикл создания врагов
+            while (enemies > 0)
+            {
+                x = random.Next(mapSize);
+                y = random.Next(mapSize);
+                if (map[x, y] == '_')
+                {
+                    map[x, y] = 'E';
+                    enemies--;
+                }
+            }
+            //Цикл создания баффов
+            while (buffs > 0)
+            {
+                x = random.Next(mapSize);
+                y = random.Next(mapSize);
+                if (map[x, y] == '_')
+                {
+                    map[x, y] = 'B';
+                    buffs--;
+                }
+            }
+            //Цикл создания аптечек
+            while (health > 0)
+            {
+                x = random.Next(mapSize);
+                y = random.Next(mapSize);
+                if (map[x, y] == '_')
+                {
+                    map[x, y] = 'H';
+                    health--;
+                }
+            }
+            //Обновление карты
+            UpdateMap();
+        }
+        //Метод передвижения
+        static void Move()
+        {
+            //Создание старых координат
+            
+            while (true)
+            {
+                //Вывод здоровья
+                Console.SetCursorPosition(0, 26);
+                Console.Write($"Здоровье игрока: {PlayerHp}");
+                Console.SetCursorPosition(0, 27);
+                Console.Write($"Сила игрока: {PlayerPower}");
+                Console.SetCursorPosition(0, 28);
+                Console.Write($"Количество шагов: {NumSteps}");
+                //Присвоение значения старым координатам
+                playerOldX = playerX;
+                playerOldY = playerY;
+                //Свитч на изменение координат
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        playerY--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        playerY++;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        playerX--;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        playerX++;
+                        break;
+                }
+                //Система боевки
+                Fight();
+                //Система лечения
+                Heals();
+                //Система баффа
+                Buff();
+                //Подсчет длительности баффа
+                buffcount++;
+                //Проверка на завершении баффа
+                if (buffcount == buffcounthelp + 21)
+                {
+                    PlayerPower = 10;
+                }
+                //Отключение отображения курсора
+                Console.CursorVisible = false;
+                //Затирание старого положения игрока
+                map[playerOldY, playerOldX] = '_';
+                //Установка курсора на место старых координат
+                Console.SetCursorPosition(playerOldX, playerOldY);
+                //Затирка старых координат
+                Console.Write('_');
+                //Установка нового положения игрока
+                map[playerY, playerX] = 'P';
+                //Перенос курсора на координаты нового положения
+                Console.SetCursorPosition(playerX, playerY);
+                //Замена текущего символа в данном месте на игрока
+                Console.Write('P');
+                //Счет шагов
+                NumSteps++;
+            }
+
+        }
+
+        //Метод обновления карты
+        static void UpdateMap()
+        {
+            Console.Clear();
+            for (int i = 0; i < mapSize; i++)
+            {
+                for (int j = 0; j < mapSize; j++)
+                {
+                    Console.Write(map[i, j]);
+                }
+                Console.WriteLine(map[i, 0]);
+            }
+        }
+        //Метод боевки
+        static void Fight()
+        {
+            if (map[playerY, playerX] == 'E')
+            {
+                PlayerHp -= EnemiesPower;
+                EnemiesHp -= PlayerPower;
+                //Затирание старого положения игрока
+                map[playerOldY, playerOldX] = 'E';
+                //Установка курсора на место старых координат
+                Console.SetCursorPosition(playerOldX, playerOldY);
+                //Затирка старых координат
+                Console.Write('E');
+                //Установка нового положения игрока
+                map[playerY, playerX] = 'P';
+                //Перенос курсора на координаты нового положения
+                Console.SetCursorPosition(playerX, playerY);
+                //Замена текущего символа в данном месте на игрока
+                Console.Write('P');
+            }
+        }
+        //Метод лечения
+        static void Heals()
+        {
+            if (map[playerY, playerX] == 'H')
+            {
+                PlayerHp = 50;
+            }
+        }
+        //Метод баффа
+        static void Buff()
+        {
+            if (map[playerY, playerX] == 'B')
+            {
+                buffcounthelp = NumSteps;
+                PlayerPower = 20;
+            }
+        }
+    }
+}
